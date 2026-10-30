@@ -224,15 +224,15 @@ export class GeminiProApi implements LLMApi {
       );
 
       if (shouldStream) {
-        const [tools, funcs] = usePluginStore
+        const [tools, funcs]: [any[], any] = usePluginStore
           .getState()
           .getAsTools(
             useChatStore.getState().currentSession().mask?.plugin || [],
-          );
+          ) as [any[], any];
 
         // Enable Google Search grounding tool by default for live web browsing
         const googleTools: any[] = [{ google_search: {} }];
-        if (tools.length > 0) {
+        if (Array.isArray(tools) && tools.length > 0) {
           googleTools.push({ functionDeclarations: tools.map((tool: any) => tool.function) });
         }
 
